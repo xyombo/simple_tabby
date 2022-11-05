@@ -1,0 +1,15 @@
+[
+  {
+    "name": "name",
+    "describe": "description for the configuration",
+    "application": [
+      "first app that deploy in server",
+      "second app that deploy in server"
+    ],
+    "host": "remote server ip or host",
+    "port": 22,
+    "user": "remote user",
+    "password": "remote password",
+    "privateKey": "ssh key path"
+  }
+]
