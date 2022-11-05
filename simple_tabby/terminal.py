@@ -28,7 +28,9 @@ def select_one_to_login(no):
     host = c['host']
     port = c['port']
     user = c['user']
-    private_key = c['privateKey']
+    private_key = os.path.expanduser("~/.ssh/id_rsa")
+    if 'privateKey' in c:
+        private_key = c
     passwd = c['password']
     pyperclip.copy(passwd)
     print("trying to login server with ssh-key, if you has config password, the password has copied to clip, just pasted and enter!!")
