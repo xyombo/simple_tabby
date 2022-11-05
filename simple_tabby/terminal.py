@@ -47,6 +47,7 @@ if __name__ == '__main__':
         list_all_remote_servers()
         configs_len = len(configs)
         print(f"please select one to connect [1,{configs_len}] (input 0 for cancel) :", end="")
+        no = input()
     if 0 >= int(no):
         sys.exit()
     select_one_to_login(int(no))
