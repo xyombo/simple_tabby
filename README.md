@@ -7,7 +7,7 @@ A command tool modeled after tabby. [Tabby](https://github.com/Eugeny/tabby) is 
 I just need a gadget for my work . In my work, i need to manage many remote server machines that deployed some application, such as java application,mysql and so on.
 when i decided to connect some machines, I spend a lot of time checking which applications are deployed on each server
 it's making me miserable. Tabby has wonderful **Profiles & connections** feature, but there no space to remark more information
-for every machine or connection.
+for every machine or connection. I still need another document to manage information that can not hold with Tabby.
 
 # Usage
 
