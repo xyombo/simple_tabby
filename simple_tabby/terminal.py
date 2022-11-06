@@ -42,7 +42,7 @@ def main():
     parser = argparse.ArgumentParser(description="Hello ", add_help=True)
     parser.add_argument('-ls', '--list', required=False,
                         action='store_true', help="list all configed servers")
-    parser.add_argument('-c', '--connect', type=str,
+    parser.add_argument('-c', '--connect', type=int,
                         required=False, help="connect to remote server by no")
 
     
