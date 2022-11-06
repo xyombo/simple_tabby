@@ -1,6 +1,7 @@
 # Simple Tabby
 
-A command tool modeled after tabby. [Tabby](https://github.com/Eugeny/tabby) is a perfect terminal tools with rich features.
+A command tool modeled after tabby. [Tabby](https://github.com/Eugeny/tabby) is a perfect terminal tools with rich features , but it also miss some features for me ,such as tmux or window
+split 
 
 # Why
 
