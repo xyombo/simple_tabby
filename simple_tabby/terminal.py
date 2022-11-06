@@ -37,7 +37,7 @@ def select_one_to_login(no):
     os.system(f"ssh {user}@{host} -p {port} -i {private_key}")
 
 
-if __name__ == '__main__':
+def main():
     argv_len = len(sys.argv)
     no = 0
     if argv_len == 2:
@@ -46,8 +46,13 @@ if __name__ == '__main__':
         # list all remote server machine
         list_all_remote_servers()
         configs_len = len(configs)
-        print(f"please select one to connect [1,{configs_len}] (input 0 for cancel) :", end="")
+        print(
+            f"please select one to connect [1,{configs_len}] (input 0 for cancel) :", end="")
         no = input()
     if 0 >= int(no):
         sys.exit()
     select_one_to_login(int(no))
+
+
+if __name__ == '__main__':
+    main()
