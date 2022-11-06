@@ -10,8 +10,8 @@ with open("README.md", "r") as fh:
 setup(
     name='stabby',
     version='0.1.0',
-    author="<authorname>",
-    author_email="<authorname@templatepackage.com>",
+    author="yombo",
+    author_email="yombo@qq.com",
     description="Simple tool like tabby",
     long_description=long_description,
     long_description_content_type="text/markdown",
