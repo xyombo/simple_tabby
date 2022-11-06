@@ -5,10 +5,8 @@ import time
 
 import pyperclip
 
-start = time.time()
 configs = json.loads(
     open(os.path.expanduser("~/.simple_tabby/terminals_config.json"), encoding='utf-8').read())
-end = time.time()
 
 
 def list_all_remote_servers():
