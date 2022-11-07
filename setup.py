@@ -9,10 +9,11 @@ with open("README.md", "r") as fh:
 
 setup(
     name='stabby',
-    version='0.1.0',
+    version='1.0.1',
     author="yombo",
-    author_email="yombo@qq.com",
-    description="Simple tool like tabby",
+    author_email="",
+    url="https://github.com/Booooooger/simple_tabby",
+    description="A helper for ssh operate in terminal",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
@@ -24,4 +25,8 @@ setup(
     entry_points={
         'console_scripts': ['stabby=simple_tabby.terminal:main'],
     },
+    classifiers=(
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+    ),
 )
