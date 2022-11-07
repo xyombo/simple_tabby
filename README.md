@@ -1,7 +1,10 @@
 # Simple Tabby
 
-A command tool modeled after tabby. [Tabby](https://github.com/Eugeny/tabby) is a perfect terminal tools with rich features , but it also miss some features for me ,such as tmux or window
-split 
+A hepler tool to manage many remote ssh server.
+
+when you open a native terminal on unix system , stabby can list all remote ssh server that you have configed as a pretty table. Then you can choose one to login.
+
+You will get more infomation about every remote ssh server depend on what's your describe for the server 
 
 # Why
 
@@ -10,22 +13,28 @@ when i decided to connect some machines, I spend a lot of time checking which ap
 it's making me miserable. Tabby has wonderful **Profiles & connections** feature, but there no space to remark more information
 for every machine or connection. I still need another document to manage information that can not hold with Tabby.
 
+# Install
+
+```shell
+pip install stabby
+```
+
 # Usage
 
-1. clone the code
-2. install require python package from requirements.txt
-3. use `pyinstaller` build
+```shell
 
-    ```shell
-    $ pyinstall -F terminal.py
-    ```
+usage: stabby [-h] [-ls] [-c CONNECT] [-t TUNNET]
 
-4. the file under dist named `terminal` is the finally executable file
-5. run `terminal` in your command line
+Hello
 
-    ```shell
-    $ terminal 
-    ```
+optional arguments:
+  -h, --help            show this help message and exit
+  -ls, --list           list all configed servers.
+  -c CONNECT, --connect CONNECT
+                        connect to remote server by No.
+  -t TUNNET, --tunnet TUNNET
+                        open tunnet with ssh localport:remoteport
+```
 
 # How does it work
 
@@ -53,7 +62,7 @@ It's so easy. Default , stabby(simple_tabby) loads config file under `$USER_HOME
 ]
 ```
 
-and the file need to create by yourself. if load file success, stabby will print as table like below:
+and the file need to create by yourself. you can use different json file to group your remote server information. if load file success, stabby will print as table like below:
 
 | no  | name         | ip        | apps    | tags        | description         |
 |-----|--------------|-----------|---------|-------------|---------------------|
@@ -61,4 +70,4 @@ and the file need to create by yourself. if load file success, stabby will print
 | 2   | spring-boot  | 127.0.0.2 | jar     | application | application machine |
 | 3   | jenkins      | 127.0.0.3 | jenkins | devops      | ops machine         |
 
-at last ,just follow command line promotes.
+
