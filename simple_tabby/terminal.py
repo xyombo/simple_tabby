@@ -60,7 +60,6 @@ def main():
                         help="open tunnet with ssh localport:remoteport")
 
     args = parser.parse_args()
-    print(args)
     if (args.list):
         # list all remote server machine
         list_all_remote_servers()
