@@ -21,24 +21,21 @@ pip install stabby
 
 # Usage
 
+## add your first remote server config 
+run command `stabby add ` , follow promotes input server configuration , like below:
 ```shell
 
-usage: stabby [-h] [-ls] [-c CONNECT] [-t TUNNET]
-
-Hello
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -ls, --list           list all configed servers.
-  -c CONNECT, --connect CONNECT
-                        connect to remote server by No.
-  -t TUNNET, --tunnet TUNNET
-                        open tunnet with ssh localport:remoteport
 ```
+
+## connect to remote server
+
+run command `stabby` ,you can see as below:
+
+
 
 # How does it work
 
-It's so easy. Default , stabby(simple_tabby) loads config file under `$USER_HOME/.simple_tabby/terminals_config.json`, file content like below:
+It's so easy. Default , stabby(simple_tabby) loads config file under `$USER_HOME/.simple_tabby/default.json`, file content like below:
 
 ```json
 [
@@ -49,25 +46,9 @@ It's so easy. Default , stabby(simple_tabby) loads config file under `$USER_HOME
     "user": "remote user",
     "password": "remote password",
     "privateKey": "ssh key path",
-    "describe": "description for the configuration",
-    "application": [
-      "first app that deploy in server",
-      "second app that deploy in server"
-    ],
-    "tags": [
-      "prod",
-      "application-server"
-    ]
   }
 ]
 ```
 
 and the file need to create by yourself. you can use different json file to group your remote server information. if load file success, stabby will print as table like below:
-
-| no  | name         | ip        | apps    | tags        | description         |
-|-----|--------------|-----------|---------|-------------|---------------------|
-| 1   | mysql-server | 127.0.0.1 | mysql   | mysql       | mysql machine       |
-| 2   | spring-boot  | 127.0.0.2 | jar     | application | application machine |
-| 3   | jenkins      | 127.0.0.3 | jenkins | devops      | ops machine         |
-
 

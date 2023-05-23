@@ -9,9 +9,9 @@ with open("README.md", "r") as fh:
 
 setup(
     name='stabby',
-    version='1.0.1',
+    version='1.0.2',
     author="yombo",
-    author_email="",
+    author_email="yombo@qq.com",
     url="https://github.com/Booooooger/simple_tabby",
     description="A helper for ssh operate in terminal",
     long_description=long_description,
@@ -19,11 +19,9 @@ setup(
     packages=find_packages(),
     install_requires=[
         "pyperclip==1.8.2",
-        "prettytable==3.5.0",
-        "wcwidth==0.2.5"
     ],
     entry_points={
-        'console_scripts': ['stabby=simple_tabby.terminal:main'],
+        'console_scripts': ['stabby=simple_tabby.stabby:main'],
     },
     classifiers=(
         "Programming Language :: Python :: 3",
