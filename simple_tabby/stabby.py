@@ -28,8 +28,8 @@ def connect(selected_config,args):
         command = f"ssh -L {ports[0]}:127.0.0.1:{ports[1]} -N -f {user}@{host}"
         print("-> run command :",command)
         i = os.system(command)
-
-    os.system(f"ssh {user}@{host} -p {port} -i {private_key}")
+    else:
+       os.system(f"ssh {user}@{host} -p {port} -i {private_key}")
 
    
 def show_options():
@@ -56,12 +56,11 @@ def add(args):
     SSH_SERVER_CONFIGS.append({
         'title':args.n if args.n else args.s,
         'host':args.s,
-        'user':args.s,
-        'password':args.pwd,
+        'user':args.u,
+        'password':args.p,
         'port':args.port
     })
-    print(SSH_SERVER_CONFIGS)
-    # save_file()
+    save_file()
 
 def login(args):
     load_config()
@@ -78,8 +77,8 @@ def main():
     subparsers = parser.add_subparsers(help='sub-command help')
     add_parser = subparsers.add_parser('add',help="add new server config")
     add_parser.add_argument('-s',type=str,required=True,help="remote server host")
-    add_parser.add_argument('-pwd',type=str,required=True,help="remote server password")
-    add_parser.add_argument('-p',type=int,default=22,help="remote server ssh port")
+    add_parser.add_argument('-p',type=str,required=True,help="remote server password")
+    add_parser.add_argument('-port',type=int,default=22,help="remote server ssh port")
     add_parser.add_argument('-u',type=str,default="root",help="remote server user name ")
     add_parser.add_argument('-n',type=str,default=None,help="remote server name ")
     add_parser.set_defaults(func=add)
