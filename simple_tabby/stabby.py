@@ -26,12 +26,10 @@ def connect(selected_config,args):
     if (args.tunnet):
         ports = args.tunnet.split(":")
         command = f"ssh -L {ports[0]}:127.0.0.1:{ports[1]} -N -f {user}@{host}"
-        print("run command :",command)
+        print("-> run command :",command)
         i = os.system(command)
 
     os.system(f"ssh {user}@{host} -p {port} -i {private_key}")
-
-
 
    
 def show_options():
@@ -53,53 +51,41 @@ def load_config():
         configs = json.loads(open(os.path.join(DEFAULT_CONFIG_PATH, config_file), encoding='utf-8').read())
         SSH_SERVER_CONFIGS = SSH_SERVER_CONFIGS+configs
 
-def add(title,host,user='root',passwd=None,port="22"):
+def add(args):
+    load_config()
     SSH_SERVER_CONFIGS.append({
-        'title':title,
-        'host':host,
-        'user':user,
-        'password':passwd,
-        'port':port
+        'title':args.n if args.n else args.s,
+        'host':args.s,
+        'user':args.s,
+        'password':args.pwd,
+        'port':args.port
     })
-    save_file()
-   
+    print(SSH_SERVER_CONFIGS)
+    # save_file()
+
+def login(args):
+    load_config()
+    selected_idx = show_options()
+    selected_config = SSH_SERVER_CONFIGS[selected_idx]
+    connect(selected_config,args)
+    
 def main():
     parser = argparse.ArgumentParser(description="Mini tool login remote ssh server ", add_help=True)
-
     parser.add_argument('-t', '--tunnet', type=str, required=False,nargs='?',
                     help="open tunnet with ssh localport:remoteport")
-
-    args = parser.parse_args(['-t'])
-
-
-    if sys.argv[1]=='login':
-
-        load_config()
-        selected_idx = show_options()
-        selected_config = SSH_SERVER_CONFIGS[selected_idx]
-        connect(selected_config)
+    parser.set_defaults(func=login)
     
-    elif sys.argv[1] == 'add':
-        from getpass import getpass
-        title = input("Entry title:")
-        host = input("Entry host:")
-        user = input("Entry user name:")
-        passwd = getpass(prompt="Enter password:"),
-        port = input("Entry port,default is 22 :")
-        add(
-            title=title,
-            host=host,
-            user=user,
-            passwd=passwd[0] if len(passwd)>1 else '',
-            port=port
-            )
-    elif sys.argv[1] == ("del"):
-       load_config()
-       selected_idx = show_options()
-       SSH_SERVER_CONFIGS.remove(selected_idx)
-       save_file()
-
-
+    subparsers = parser.add_subparsers(help='sub-command help')
+    add_parser = subparsers.add_parser('add',help="add new server config")
+    add_parser.add_argument('-s',type=str,required=True,help="remote server host")
+    add_parser.add_argument('-pwd',type=str,required=True,help="remote server password")
+    add_parser.add_argument('-p',type=int,default=22,help="remote server ssh port")
+    add_parser.add_argument('-u',type=str,default="root",help="remote server user name ")
+    add_parser.add_argument('-n',type=str,default=None,help="remote server name ")
+    add_parser.set_defaults(func=add)
+    
+    args = parser.parse_args()
+    args.func(args)
 
 if __name__ == '__main__':
     try:

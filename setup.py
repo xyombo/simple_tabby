@@ -19,6 +19,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "pyperclip==1.8.2",
+        "simple-term-menu==1.6.1"
     ],
     entry_points={
         'console_scripts': ['stabby=simple_tabby.stabby:main'],
