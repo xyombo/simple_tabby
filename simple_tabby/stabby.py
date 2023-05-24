@@ -29,13 +29,21 @@ def connect(selected_config,args):
         print("-> run command :",command)
         i = os.system(command)
     else:
-       os.system(f"ssh {user}@{host} -p {port} -i {private_key}")
+       command = f"ssh {user}@{host} -p {port} -i {private_key}"
+       print("-> run command :",command)
+       os.system(command)
 
+def pc(args):
+    if args is not None:
+        for config in SSH_SERVER_CONFIGS:
+            if config['title']==args :
+                return f"host:{config['host']} \nport:{config['port']}\nuser:{config['user']}\n"
+    return None
    
 def show_options():
     from simple_term_menu import TerminalMenu
     options = [SSH_SERVER_CONFIGS[i]['title'] for i in range(len(SSH_SERVER_CONFIGS))]
-    ternimal_menu = TerminalMenu(options,show_search_hint=True,quit_keys=["q"])
+    ternimal_menu = TerminalMenu(options,show_search_hint=True,quit_keys=["q"],preview_command=pc, preview_size=0.75)
     return ternimal_menu.show()
 
 def save_file():
@@ -65,8 +73,9 @@ def add(args):
 def login(args):
     load_config()
     selected_idx = show_options()
-    selected_config = SSH_SERVER_CONFIGS[selected_idx]
-    connect(selected_config,args)
+    if(selected_idx is not None):
+        selected_config = SSH_SERVER_CONFIGS[selected_idx]
+        connect(selected_config,args)
     
 def main():
     parser = argparse.ArgumentParser(description="Mini tool login remote ssh server ", add_help=True)
