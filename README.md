@@ -24,14 +24,34 @@ pip install stabby
 ## add your first remote server config 
 run command `stabby add ` , follow promotes input server configuration , like below:
 ```shell
-
+usage: stabby add [-h] -s S -p P [-port PORT] [-u U] [-n N]                                                    
+                                                                                                        
+optional arguments:                                                                                            
+  -h, --help  show this help message and exit                                                                  
+  -s S        remote server host                                                                               
+  -p P        remote server password                                                                           
+  -port PORT  remote server ssh port                                                                           
+  -u U        remote server user name                                                                          
+  -n N        remote server name   
+```
+example :
+```shell
+stabby add -s 192.168.1.253 -p password123 -n dev
 ```
 
 ## connect to remote server
 
 run command `stabby` ,you can see as below:
 
+![image](./docs/1684896760610.jpg)
 
+you can select one remote server that you have added to connect by **KEY_UP** 、**KEY_DOWN** or **KEY_LEFT** 、**KEY_RIGHT** 
+
+as you also can open ssh tunnue with `-t` command arg ,for example:
+```shell
+# stabby -t localport:remoteport
+stabby -t 6041:5041
+```
 
 # How does it work
 
@@ -40,15 +60,14 @@ It's so easy. Default , stabby(simple_tabby) loads config file under `$USER_HOME
 ```json
 [
   {
-    "name": "name",
+    "title": "title for remote server",
     "host": "remote server ip or host",
     "port": 22,
-    "user": "remote user",
+    "user": "remote user ,default is root",
     "password": "remote password",
-    "privateKey": "ssh key path",
   }
 ]
 ```
 
-and the file need to create by yourself. you can use different json file to group your remote server information. if load file success, stabby will print as table like below:
-
+when stabby is running, it loads file as json objects,let user can see all server
+![](docs/1684896760610.jpg)

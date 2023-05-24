@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='stabby',
-    version='1.0.2',
+    version='1.0.3',
     author="yombo",
     author_email="yombo@qq.com",
     url="https://github.com/Booooooger/simple_tabby",
