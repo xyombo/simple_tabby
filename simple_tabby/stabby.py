@@ -4,9 +4,40 @@ import os
 import json
 import pyperclip
 import sys
+import paramiko
+import select
+import termios
+import tty
 
 DEFAULT_CONFIG_PATH = os.path.expanduser("~/.simple_tabby")
 SSH_SERVER_CONFIGS = []
+
+def open_session(host,user,port,passwrd):
+    try:
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(host,port=port,username=user,password=passwrd)
+        channel = client.invoke_shell()
+        oldtty = termios.tcgetattr(sys.stdin)
+        tty.setraw(sys.stdin)
+        while True:
+            readlist, writelist, errlist = select.select([channel, sys.stdin,], [channel,sys.stdout], [])
+            if sys.stdin in readlist:
+                input_cmd = sys.stdin.read(1)
+                channel.sendall(input_cmd)
+            if channel in readlist:
+                result = channel.recv(1024)
+                if len(result) == 0:
+                    break
+                sys.stdout.write(result.decode())
+                sys.stdout.flush()
+    except Exception as err:
+        print(str(err))
+    finally:
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, oldtty)
+        channel.close() 
+        client.close()
 
 
 def connect(selected_config,args):
@@ -29,9 +60,8 @@ def connect(selected_config,args):
         print("-> run command :",command)
         i = os.system(command)
     else:
-       command = f"ssh {user}@{host} -p {port} -i {private_key}"
-       print("-> run command :",command)
-       os.system(command)
+        open_session(host, user, port, passwd)
+
 
 def pc(args):
     if args is not None:

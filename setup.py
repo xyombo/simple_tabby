@@ -9,7 +9,8 @@ with open("README.md", "r") as fh:
 
 setup(
     name='stabby',
-    version='1.0.3',
+    version='1.0.4',
+    keywords=["terminal", "ssh", "tabby like"],
     author="yombo",
     author_email="yombo@qq.com",
     url="https://github.com/Booooooger/simple_tabby",
@@ -17,10 +18,6 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=[
-        "pyperclip==1.8.2",
-        "simple-term-menu==1.6.1"
-    ],
     entry_points={
         'console_scripts': ['stabby=simple_tabby.stabby:main'],
     },
