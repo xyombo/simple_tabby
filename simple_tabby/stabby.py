@@ -21,7 +21,9 @@ def open_session(host,user,port,passwrd):
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(host,port=port,username=user,password=passwrd)
+        print(1)
+        client.connect(host,port=port,username=user)
+        print(1)
         channel = client.invoke_shell(width=1000,height=500)
         oldtty = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin)
@@ -76,6 +78,7 @@ def pc(args):
     return None
    
 def show_options():
+    load_config()
     from simple_term_menu import TerminalMenu
     options = [SSH_SERVER_CONFIGS[i]['title'] for i in range(len(SSH_SERVER_CONFIGS))]
     ternimal_menu = TerminalMenu(options,show_search_hint=True,quit_keys=["q"],preview_command=pc, preview_size=0.75)
@@ -106,11 +109,17 @@ def add(args):
     save_file()
 
 def login(args):
-    load_config()
     selected_idx = show_options()
     if(selected_idx is not None):
         selected_config = SSH_SERVER_CONFIGS[selected_idx]
         connect(selected_config,args)
+
+def delConfig(args):
+    selected_idx = show_options()
+    if(selected_idx is not None):
+        del SSH_SERVER_CONFIGS[selected_idx:selected_idx+1]
+        save_file()
+    
     
 def main():
     parser = argparse.ArgumentParser(description="Mini tool login remote ssh server ", add_help=True)
@@ -121,11 +130,14 @@ def main():
     subparsers = parser.add_subparsers(help='sub-command help')
     add_parser = subparsers.add_parser('add',help="add new server config")
     add_parser.add_argument('-s',type=str,required=True,help="remote server host")
-    add_parser.add_argument('-p',type=str,required=True,help="remote server password")
+    add_parser.add_argument('-p',type=str,required=False,help="remote server password")
     add_parser.add_argument('-port',type=int,default=22,help="remote server ssh port")
     add_parser.add_argument('-u',type=str,default="root",help="remote server user name ")
     add_parser.add_argument('-n',type=str,default=None,help="remote server name ")
     add_parser.set_defaults(func=add)
+
+    del_parser = subparsers.add_parser("del",help="delete server config")
+    del_parser.set_defaults(func=delConfig)
     
     args = parser.parse_args()
     args.func(args)
