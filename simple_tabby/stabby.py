@@ -19,10 +19,11 @@ def open_session(host,user,port,passwrd):
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(host,port=port,username=user,password=passwrd)
         channel = client.invoke_shell()
+        channel.resize_pty(width=300,height=100)
         oldtty = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin)
         while True:
-            readlist, writelist, errlist = select.select([channel, sys.stdin,], [channel,sys.stdout], [])
+            readlist, writelist, errlist = select.select([channel, sys.stdin,], [], [])
             if sys.stdin in readlist:
                 input_cmd = sys.stdin.read(1)
                 channel.sendall(input_cmd)
