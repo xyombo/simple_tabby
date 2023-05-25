@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
-path = pathroot = os.path.split(os.path.realpath(__file__))[0]
 
+path = pathroot = os.path.split(os.path.realpath(__file__))[0]
 
 with open("README.md", "r") as fh:
 
@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='stabby',
-    version='1.0.4',
+    version='1.0.5',
     keywords=["terminal", "ssh", "tabby like"],
     author="yombo",
     author_email="yombo@qq.com",

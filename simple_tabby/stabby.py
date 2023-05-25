@@ -9,6 +9,10 @@ import select
 import termios
 import tty
 
+__version_info__ = (1, 0, 5)
+__version__ = ".".join(map(str, __version_info__))
+
+
 DEFAULT_CONFIG_PATH = os.path.expanduser("~/.simple_tabby")
 SSH_SERVER_CONFIGS = []
 
@@ -18,8 +22,7 @@ def open_session(host,user,port,passwrd):
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(host,port=port,username=user,password=passwrd)
-        channel = client.invoke_shell()
-        channel.resize_pty(width=300,height=100)
+        channel = client.invoke_shell(width=1000,height=500)
         oldtty = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin)
         while True:
@@ -39,6 +42,7 @@ def open_session(host,user,port,passwrd):
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, oldtty)
         channel.close() 
         client.close()
+        print('\r\n*** stabby logout ***\r\n')
 
 
 def connect(selected_config,args):
