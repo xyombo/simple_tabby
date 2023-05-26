@@ -16,14 +16,13 @@ __version__ = ".".join(map(str, __version_info__))
 DEFAULT_CONFIG_PATH = os.path.expanduser("~/.simple_tabby")
 SSH_SERVER_CONFIGS = []
 
-def open_session(host,user,port,passwrd):
+def open_session(host,user,port,passwrd,private_key):
     try:
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        print(1)
-        client.connect(host,port=port,username=user)
-        print(1)
+        client.connect(host,port=port,username=user,password=passwrd,key_filename=private_key)
+        print(f"\033[7m=> stabby login into {host}\033[0m\n")
         channel = client.invoke_shell(width=1000,height=500)
         oldtty = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin)
@@ -33,7 +32,7 @@ def open_session(host,user,port,passwrd):
                 input_cmd = sys.stdin.read(1)
                 channel.sendall(input_cmd)
             if channel in readlist:
-                result = channel.recv(1024)
+                result = channel.recv(sys.maxsize)
                 if len(result) == 0:
                     break
                 sys.stdout.write(result.decode())
@@ -44,7 +43,7 @@ def open_session(host,user,port,passwrd):
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, oldtty)
         channel.close() 
         client.close()
-        print('\r\n*** stabby logout ***\r\n')
+        print(f"\033[7m\n<= stabby logout from {host} \033[0m\n")
 
 
 def connect(selected_config,args):
@@ -67,7 +66,7 @@ def connect(selected_config,args):
         print("-> run command :",command)
         i = os.system(command)
     else:
-        open_session(host, user, port, passwd)
+        open_session(host, user, port, passwd,private_key)
 
 
 def pc(args):

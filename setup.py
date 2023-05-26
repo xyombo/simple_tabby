@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='stabby',
-    version='1.0.5',
+    version='1.0.6',
     keywords=["terminal", "ssh", "tabby like"],
     author="yombo",
     author_email="yombo@qq.com",
