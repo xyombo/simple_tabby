@@ -13,6 +13,7 @@ __version_info__ = (1, 0, 5)
 __version__ = ".".join(map(str, __version_info__))
 
 
+DEFAULT_SHELL_TERM="linux"
 DEFAULT_CONFIG_PATH = os.path.expanduser("~/.simple_tabby")
 SSH_SERVER_CONFIGS = []
 
@@ -23,7 +24,7 @@ def open_session(host,user,port,passwrd,private_key):
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(host,port=port,username=user,password=passwrd,key_filename=private_key)
         print(f"\033[7m=> stabby login into {host}\033[0m\n")
-        channel = client.invoke_shell(width=1000,height=500)
+        channel = client.invoke_shell(term=DEFAULT_SHELL_TERM,width=1000,height=500)
         oldtty = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin)
         while True:
@@ -32,7 +33,7 @@ def open_session(host,user,port,passwrd,private_key):
                 input_cmd = sys.stdin.read(1)
                 channel.sendall(input_cmd)
             if channel in readlist:
-                result = channel.recv(sys.maxsize)
+                result = channel.recv(10485760) # max recv 10M btyes
                 if len(result) == 0:
                     break
                 sys.stdout.write(result.decode())
@@ -56,11 +57,13 @@ def connect(selected_config,args):
     if 'privateKey' in selected_config:
         private_key = selected_config['privateKey']
     
-    if (passwd):
-        pyperclip.copy(passwd)
-        print("trying to login server with ssh-key, if you has config password, the password has copied to clip, just pasted and enter!!")
-
     if (args.tunnet):
+        if (passwd):
+            pyperclip.copy(passwd)
+            print("trying to login server with ssh-key, if you has config password, the password has copied to clip, just pasted and enter!!")
+
+        #todo, open ssh tunnet with using paramiko. see demo https://github.com/paramiko/paramiko/blob/main/demos/forward.py
+        open_tunnet(host,user,port,passwd,private_key,ports)
         ports = args.tunnet.split(":")
         command = f"ssh -L {ports[0]}:127.0.0.1:{ports[1]} -N -f {user}@{host}"
         print("-> run command :",command)
