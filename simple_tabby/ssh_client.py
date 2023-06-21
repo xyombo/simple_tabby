@@ -15,15 +15,16 @@ except ImportError:
 import sys
 from optparse import OptionParser
 
+
 class SSH:
 
-    def __init__(self,host,user,port,passwrd,private_key):
+    def __init__(self, host, user, port, passwrd, private_key):
         self.host = host
         self.user = user
         self.port = port
         self.passwd = passwrd,
         self.private_key = private_key
-    
+
     def open_shell(self):
         try:
             client = paramiko.SSHClient()
@@ -36,16 +37,17 @@ class SSH:
                            key_filename=self.private_key
                            )
             print(f"\033[7m=> stabby login into {self.host}\033[0m\n")
-            channel = client.invoke_shell(term='linux',width=1000,height=500)
+            channel = client.invoke_shell(term='linux', width=1000, height=500)
             oldtty = termios.tcgetattr(sys.stdin)
             tty.setraw(sys.stdin)
             while True:
-                readlist, writelist, errlist = select.select([channel, sys.stdin,], [], [])
+                readlist, writelist, errlist = select.select(
+                    [channel, sys.stdin,], [], [])
                 if sys.stdin in readlist:
                     input_cmd = sys.stdin.read(1)
                     channel.sendall(input_cmd)
                 if channel in readlist:
-                    result = channel.recv(10485760) # max recv 10M btyes
+                    result = channel.recv(10485760)  # max recv 10M btyes
                     if len(result) == 0:
                         break
                     sys.stdout.write(result.decode())
@@ -54,22 +56,34 @@ class SSH:
             print(str(err))
         finally:
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, oldtty)
-            channel.close() 
+            channel.close()
             client.close()
             print(f"\033[7m\n<= stabby logout from {self.host} \033[0m\n")
 
-    def open_tunnet(self,local_port,remote_port):
+    def open_tunnet(self, local_port, remote_port):
         import pyperclip
         pyperclip.copy(self.passwd[0])
         command = f"ssh -L {local_port}:127.0.0.1:{remote_port} {self.user}@{self.host}"
         print("-> run command :",command)
         i = os.system(command)
 
-                            
+    def _ssh_client():
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname=self.host,
+                       port=self.port,
+                       username=self.user,
+                       password=self.passwd[0],
+                       key_filename=self.private_key
+                       )
+        return client
+
 
 class ForwardServer(SocketServer.ThreadingTCPServer):
     daemon_threads = True
     allow_reuse_address = True
+
 
 class Handler(SocketServer.BaseRequestHandler):
     def handle(self):
