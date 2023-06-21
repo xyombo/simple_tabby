@@ -8,6 +8,7 @@ import paramiko
 import select
 import termios
 import tty
+from simple_tabby import inactive
 
 __version_info__ = (1, 0, 6)
 __version__ = ".".join(map(str, __version_info__))
@@ -61,7 +62,6 @@ def main():
     parser = argparse.ArgumentParser(description="Mini tool login remote ssh server ", add_help=True)
     parser.add_argument('-t', '--tunnet', type=str, required=False,nargs='?',
                     help="open tunnet with ssh localport:remoteport")
-    import inactive
     parser.set_defaults(func=inactive.main)
     
     #sub command to add new server

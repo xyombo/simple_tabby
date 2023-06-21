@@ -64,8 +64,12 @@ def show_actions():
     return ternimal_menu.show()
 
 def main(*args):
+
+    import sys
     # show options menu
     selected = show_options()
+    if(None == selected):
+        sys.exit(0)
     # action. login or open tunnel
     action  = show_actions()
     
