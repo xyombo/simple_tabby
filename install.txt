@@ -1,0 +1,2 @@
+/Library/Python/3.8/site-packages/stabby-1.0.6-py3.8.egg
+/usr/local/bin/sby

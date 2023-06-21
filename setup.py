@@ -19,7 +19,7 @@ setup(
     long_description_content_type="text/markdown",
     packages=find_packages(),
     entry_points={
-        'console_scripts': ['stabby=simple_tabby.stabby:main'],
+        'console_scripts': ['sby=simple_tabby.stabby:main'],
     },
     classifiers=(
         "Programming Language :: Python :: 3",
