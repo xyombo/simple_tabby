@@ -60,10 +60,11 @@ class SSH:
 
     def open_tunnet(self,local_port,remote_port):
         import pyperclip
-        pyperclip.copy(self.passwd)
-        command = f"ssh -L {local_port}:127.0.0.1:{remote_port} {user}@{host}"
+        pyperclip.copy(self.passwd[0])
+        command = f"ssh -L {local_port}:127.0.0.1:{remote_port} {self.user}@{self.host}"
         print("-> run command :",command)
         i = os.system(command)
+
                             
 
 class ForwardServer(SocketServer.ThreadingTCPServer):

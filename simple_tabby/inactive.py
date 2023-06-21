@@ -1,5 +1,6 @@
 import os
 import json
+from simple_tabby.ssh_client import SSH    
 
 DEFAULT_CONFIG_PATH = os.path.expanduser("~/.simple_tabby")
 SSH_SERVER_CONFIGS = []
@@ -27,7 +28,6 @@ def login(sconfig):
     pass
 
 def tunnet(sconfig):
-    from ssh_client import SSH    
     host = sconfig['host']if 'host' in sconfig else 'localhost'
     user = sconfig['user']if 'user' in sconfig else 'root'
     port = sconfig['port']if 'port' in sconfig else 22
